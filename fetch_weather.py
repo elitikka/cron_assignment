@@ -18,25 +18,25 @@ os.makedirs(radar_dir, exist_ok=True)
 # DATETIME RANGE: viimeisin tunti UTC
 endtime = datetime.now(timezone.utc)
 starttime = endtime - timedelta(hours=1)
-
 # muuta formaattia(ISO format with Z)
 starttime_iso = starttime.isoformat(timespec='seconds').replace('+00:00', 'Z')
 endtime_iso = endtime.isoformat(timespec='seconds').replace('+00:00', 'Z')
 
-try:
-    # Lataa tutkakuva komposiitti
+
+try: # Lataa tutkakuva komposiitti
     composite = download_stored_query(
         "fmi::radar::composite::dbz",
-        starttime=starttime_iso,
-        endtime=endtime_iso,
-        bbox="20,59,32,71,epsg::4326"  # bounding box Suomelle
+        params={
+            "starttime": starttime_iso,
+            "endtime": endtime_iso,
+            "bbox": "20,59,32,71,epsg::4326"
+        }
     )
 
     # Tallenna kuva
     radar_file = os.path.join(radar_dir, "latest_radar.png")
     first_image = list(composite.data.values())[0]
     first_image.save_file(radar_file)
-
     print(f"Latest radar image saved to {radar_file}")
 
 except Exception as e:
