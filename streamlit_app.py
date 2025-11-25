@@ -33,16 +33,15 @@ conn.close() # Sulje tietokannan yhteys
 # Muuta aikaformaatti
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 
+st.title('Säädata Helsingistä') 
 fig = px.line(
     df,
     x='timestamp',        # X-axis: timestamp of observation
     y='temperature',      # Y-axis: temperature in Celsius
-    title="Helsinki sää",
     labels={'timestamp': 'Time', 'temperature': 'Temperature (°C)'}
 )
 
-# Show the graph in Streamlit
+# Piirrä kuvaaja
 st.plotly_chart(fig, use_container_width=True)
-
-st.title('Säädata Helsingistä') 
-st.dataframe(df, height=400) # Määritetty korkeus (height), jotta taulukko ei venähdä liian pitkäksi 
+# Taulukko
+st.dataframe(df)
