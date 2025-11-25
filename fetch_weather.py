@@ -4,10 +4,20 @@ import requests
 import mysql.connector 
 from datetime import datetime 
 from dotenv import load_dotenv
+from fmiopendata.radar import get_latest_radar_image
 import os
 
+# ENV tiedoston salaisuudet
 load_dotenv("/home/ubuntu/cron_assignment/.env")
 
+
+# Suomen Ilmatieteenlaitoksen säätutka
+radar_dir = "/home/ubuntu/cron_assignment/fmi_data/radar"
+os.makedirs(radar_dir, exist_ok=True)
+image_path = get_latest_radar_image(save_dir=radar_dir, image_type="ref")
+print(f"Latest radar image saved to {image_path}")
+
+# Open Weather API
 OWAPI_KEY = os.getenv("OW_API_KEY")
 CITY = 'Helsinki' 
 URL = f'https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={OWAPI_KEY}&units=metric' 
