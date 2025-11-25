@@ -11,7 +11,7 @@ load_dotenv(dotenv_path="/home/ubuntu/cron_assignment/.env")
 # OULU SÄÄ
 CITY = "Oulu"
 try:
-    oulu_response = requests.get(f"http://goweather.xyz/weather/{CITY}", timeout=5)
+    oulu_response = requests.get(f"http://goweather.xyz/weather/{CITY}", timeout=10)
     oulu_data = oulu_response.json()
     st.subheader(f"Sää nyt ({CITY})")
     st.write(f"Lämpötila: {oulu_data['temperature']}")
