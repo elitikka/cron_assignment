@@ -1,4 +1,5 @@
 #!/usr/bin/env python3 
+# -*- coding: utf-8 -*-
 import requests 
 import mysql.connector 
 from datetime import datetime 
@@ -31,4 +32,4 @@ cursor.execute('INSERT INTO weather_data (city, temperature, description, timest
 conn.commit() 
 cursor.close() 
 conn.close() 
-print(f'Data tallennettu: {CITY} {temp}�C {desc}')
+print(f'Data tallennettu: {CITY} {temp}°C {desc}')
