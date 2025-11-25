@@ -14,7 +14,7 @@ OU_LAT = 65.0121
 OU_LON = 25.4651
 try:
     url = f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={OU_LAT}&lon={OU_LON}"
-    headers = {"User-Agent": "MySchoolProject/1.0"}  # Required by MET.NO
+    headers = {"User-Agent": "LinuxAdministrationUniversityAssignment/1.0"}  # Required by MET.NO
     oulu_response = requests.get(url, headers=headers, timeout=10)
     oulu_data = oulu_response.json()
 
@@ -23,8 +23,8 @@ try:
     temp = details["air_temperature"]
     wind = details["wind_speed"]
 
-    st.title('Oulun sää - Norjan ilmatieteenlaitos API)') 
-    st.subheader("Sää nyt")
+    st.title('Sää Oulussa nyt') 
+    st.subheader("Norjan ilmatieteenlaitos API")
     st.write(f"Lämpötila: {temp} °C")
     st.write(f"Tuuli: {wind} m/s")
 
@@ -49,7 +49,8 @@ conn.close() # Sulje tietokannan yhteys
 # Muuta aikaformaatti
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 
-st.title('Säädata Helsingistä (OpenWeather API)') 
+st.title('Säädata Helsingistä') 
+st.subheader("OpenWeather API")
 fig = px.line(
     df,
     x='timestamp',        # X-axis: timestamp of observation
