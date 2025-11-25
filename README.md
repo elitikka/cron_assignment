@@ -1,4 +1,4 @@
-# Tehtävän ohjeet:
+# Tehtävänanto:
 Käytä hyväksi aiemmin luotua LEMP-stack arkkitehtuuria ja Streamlit-sovellusta.Tarkista Nginx serverin reverse proxy asetukset niin, että tehty Streamlit-sovellus ohjautuu näkyväksi http://sinun-vps-ip-osoite/data-analysis sivulle. 
 Tässä tehtävässa harjoitellaan cronin käyttöä ja eri skriptien tekoa sekä tietokannan käyttöä Linuxissa. 
 Muista huolehtia, että palvelut pysyvät käynnissä ja tarvittavat portit ovat auki.
