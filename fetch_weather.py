@@ -8,9 +8,9 @@ import os
 
 load_dotenv("/home/ubuntu/cron_assignment/.env")
 
-API_KEY = '72c930cf798b8d5fe4bbbe76c6aeaa1a' 
+OWAPI_KEY = os.getenv("OW_API_KEY")
 CITY = 'Helsinki' 
-URL = f'https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&units=metric' 
+URL = f'https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={OWAPI_KEY}&units=metric' 
 
 conn = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
