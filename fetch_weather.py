@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import requests 
 import mysql.connector 
-from datetime import datetime, timedelta 
+from datetime import datetime, timedelta, timezone 
 from dotenv import load_dotenv
 import os
 from fmiopendata.wfs import download_stored_query
@@ -15,16 +15,16 @@ radar_dir = "/home/ubuntu/cron_assignment/fmi_data/radar"
 os.makedirs(radar_dir, exist_ok=True)
 
 # Määritä datan range: viimeisin tunti (UTC)
-endtime = datetime.utcnow()
+endtime = datetime.now(timezone.utc)
 starttime = endtime - timedelta(hours=1)
 
 try:
-    # Lataa viimeisin heijastavuuskomposiitti
-    composite = download_stored_query(
-        "fmi::radar::composite::dbz",
-        starttime=starttime,
-        endtime=endtime
-    )
+    params = {
+        "starttime": starttime.isoformat(),
+        "endtime": endtime.isoformat()
+    }
+    # Lataa komposiitti
+    composite = download_stored_query("fmi::radar::composite::dbz", params=params)
 
     # Tallenna tutkakuva PNG:nä
     radar_file = os.path.join(radar_dir, "latest_radar.png")
