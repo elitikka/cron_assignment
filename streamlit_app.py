@@ -1,4 +1,5 @@
 import streamlit as st 
+import requests
 import mysql.connector 
 import pandas as pd 
 import plotly.express as px
@@ -6,6 +7,19 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv(dotenv_path="/home/ubuntu/cron_assignment/.env")
+
+# OULU SÄÄ
+CITY = "Oulu"
+try:
+    oulu_response = requests.get(f"http://goweather.xyz/weather/{CITY}", timeout=5)
+    oulu_data = oulu_response.json()
+    st.subheader(f"Sää nyt ({CITY})")
+    st.write(f"Lämpötila: {oulu_data['temperature']}")
+    st.write(f"Tuuli: {oulu_data['wind']}")
+except Exception as e:
+    st.error("Säätietoja ei saatavilla")
+    st.write(e)
+
 
 # OPEN WEATHER AVOIN SÄÄDATA + MYSQL
 # Avaa yhteys MySQL tietokantaan
