@@ -8,6 +8,9 @@ import os
 
 load_dotenv(dotenv_path="/home/ubuntu/cron_assignment/.env")
 
+st.title("Oulun sää nyt ja Helsingin säädata")
+st.write("Oulu: Norjan ilmatieteenlaitoksen API, Helsinki: OpenWeather API")
+
 # OULU SÄÄ - Norjan ilmatieteenlaitos
 # Oulu sijainti
 OU_LAT = 65.0121
@@ -23,8 +26,7 @@ try:
     temp = details["air_temperature"]
     wind = details["wind_speed"]
 
-    st.title('Sää Oulussa nyt') 
-    st.subheader("Norjan ilmatieteenlaitos API")
+    st.header('Sää Oulussa nyt') 
     st.write(f"Lämpötila: {temp} °C")
     st.write(f"Tuuli: {wind} m/s")
 
@@ -49,8 +51,7 @@ conn.close() # Sulje tietokannan yhteys
 # Muuta aikaformaatti
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 
-st.title('Säädata Helsingistä') 
-st.subheader("OpenWeather API")
+st.header('Säädata Helsingistä') 
 fig = px.line(
     df,
     x='timestamp',        # X-axis: timestamp of observation
