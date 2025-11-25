@@ -60,6 +60,7 @@ fig = px.line(
 )
 
 # Piirrä kuvaaja
+fig.add_hline(y=0)
 st.plotly_chart(fig, use_container_width=True)
 # Taulukko
 st.dataframe(df)
