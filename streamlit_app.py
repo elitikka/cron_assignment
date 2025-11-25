@@ -23,7 +23,8 @@ try:
     temp = details["air_temperature"]
     wind = details["wind_speed"]
 
-    st.subheader("Sää nyt (Oulu)")
+    st.title('Oulun sää - Norjan ilmatieteenlaitos API)') 
+    st.subheader("Sää nyt")
     st.write(f"Lämpötila: {temp} °C")
     st.write(f"Tuuli: {wind} m/s")
 
@@ -48,7 +49,7 @@ conn.close() # Sulje tietokannan yhteys
 # Muuta aikaformaatti
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 
-st.title('Säädata Helsingistä') 
+st.title('Säädata Helsingistä (OpenWeather API)') 
 fig = px.line(
     df,
     x='timestamp',        # X-axis: timestamp of observation
