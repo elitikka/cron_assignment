@@ -8,7 +8,7 @@ import os
 
 load_dotenv(dotenv_path="/home/ubuntu/cron_assignment/.env")
 
-st.title("Oulun sää nyt ja Helsingin säädata")
+st.title("Oulun ja Helsingin sää")
 st.write("Oulu: Norjan ilmatieteenlaitoksen API, Helsinki: OpenWeather API")
 
 # OULU SÄÄ - Norjan ilmatieteenlaitos
