@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import requests 
 import mysql.connector 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 import os
 from fmiopendata.wfs import download_stored_query
@@ -17,10 +17,10 @@ radar_dir = "/home/ubuntu/cron_assignment/fmi_data/radar"
 os.makedirs(radar_dir, exist_ok=True)
 
 # Datetime range: last 1 hour
-endtime = datetime.now()
+endtime = datetime.now(timezone.utc) - timedelta(minutes=5)
 starttime = endtime - timedelta(hours=1)
-starttime_iso = starttime.isoformat(timespec="seconds") + "Z"
-endtime_iso = endtime.isoformat(timespec="seconds") + "Z"
+starttime_iso = starttime.isoformat(timespec="seconds").replace("+00:00", "Z")
+endtime_iso = endtime.isoformat(timespec="seconds").replace("+00:00", "Z")
 
 # Download radar composite
 try:
@@ -29,7 +29,7 @@ try:
         [
             "starttime=" + starttime_iso,
             "endtime=" + endtime_iso,
-            "bbox=20,59,32,71"
+            "bbox=20,59,32,71" #Suomi?
         ]
     )
 
