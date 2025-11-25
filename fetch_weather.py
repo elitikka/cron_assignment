@@ -22,15 +22,13 @@ starttime = endtime - timedelta(hours=1)
 starttime_iso = starttime.isoformat(timespec='seconds').replace('+00:00', 'Z')
 endtime_iso = endtime.isoformat(timespec='seconds').replace('+00:00', 'Z')
 
-
-try: # Lataa tutkakuva komposiitti
+# Lataa tutkakuva komposiitti
+try:
     composite = download_stored_query(
         "fmi::radar::composite::dbz",
-        params={
-            "starttime": starttime_iso,
-            "endtime": endtime_iso,
-            "bbox": "20,59,32,71,epsg::4326"
-        }
+        starttime=starttime_iso,
+        endtime=endtime_iso,
+        bbox="20,59,32,71,epsg::4326" # bounding box suomelle
     )
 
     # Tallenna kuva
