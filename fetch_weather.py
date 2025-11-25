@@ -11,28 +11,34 @@ from fmiopendata.wfs import download_stored_query
 load_dotenv("/home/ubuntu/cron_assignment/.env")
 
 # Suomen Ilmatieteenlaitoksen säätutka
+# Jos kuville ei ole kansiota, kansio luodaan
 radar_dir = "/home/ubuntu/cron_assignment/fmi_data/radar"
 os.makedirs(radar_dir, exist_ok=True)
 
-# Määritä datan range: viimeisin tunti (UTC)
+# DATETIME RANGE: viimeisin tunti UTC
 endtime = datetime.now(timezone.utc)
 starttime = endtime - timedelta(hours=1)
 
-try:
-    params = {
-        "starttime": starttime.isoformat(),
-        "endtime": endtime.isoformat()
-    }
-    # Lataa komposiitti
-    composite = download_stored_query("fmi::radar::composite::dbz", params=params)
+# muuta formaattia(ISO format with Z)
+starttime_iso = starttime.isoformat(timespec='seconds').replace('+00:00', 'Z')
+endtime_iso = endtime.isoformat(timespec='seconds').replace('+00:00', 'Z')
 
-    # Tallenna tutkakuva PNG:nä
+try:
+    # Lataa tutkakuva komposiitti
+    composite = download_stored_query(
+        "fmi::radar::composite::dbz",
+        starttime=starttime_iso,
+        endtime=endtime_iso
+        bbox="20,59,32,71,epsg::4326"  # bounding box Suomelle
+    )
+
+    # Tallenna kuva
     radar_file = os.path.join(radar_dir, "latest_radar.png")
-    # 'composite.data' is a dict: key=timestamp, value=RadarImage object
     first_image = list(composite.data.values())[0]
     first_image.save_file(radar_file)
 
     print(f"Latest radar image saved to {radar_file}")
+
 except Exception as e:
     print(f"FMI radar download failed: {e}")
 
