@@ -6,7 +6,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
-load_dotenv(".env")
+load_dotenv("/home/ubuntu/cron_assignment/.env")
 
 API_KEY = '72c930cf798b8d5fe4bbbe76c6aeaa1a' 
 CITY = 'Helsinki' 
