@@ -17,8 +17,8 @@ radar_dir = "/home/ubuntu/cron_assignment/fmi_data/radar"
 os.makedirs(radar_dir, exist_ok=True)
 
 # Datetime range: last 1 hour
-endtime = datetime.now(timezone.utc) - timedelta(minutes=30)
-starttime = endtime - timedelta(hours=1)
+endtime = datetime.now(timezone.utc) - timedelta(minutes=5)
+starttime = endtime - timedelta(hours=5)
 starttime_iso = starttime.isoformat(timespec="seconds").replace("+00:00", "Z")
 endtime_iso = endtime.isoformat(timespec="seconds").replace("+00:00", "Z")
 
@@ -32,16 +32,6 @@ try:
             "bbox=20,59,32,71"  # Finland bounding box
         ]
     )
-
-#    composites = download_stored_query(
-#        "fmi::radar::composite::dbz",
-#        [
-#            "starttime=" + starttime_iso,
-#            "endtime=" + endtime_iso,
-#            "bbox=20,59,32,71" #Suomi?
-#        ]
-#    )
-
     if composites.data:
         # Pick the latest available composite
         latest_key = sorted(composites.data.keys())[-1]
