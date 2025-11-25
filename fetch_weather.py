@@ -17,7 +17,7 @@ radar_dir = "/home/ubuntu/cron_assignment/fmi_data/radar"
 os.makedirs(radar_dir, exist_ok=True)
 
 # Datetime range: last 1 hour
-endtime = datetime.now(timezone.utc) - timedelta(minutes=5)
+endtime = datetime.now(timezone.utc) - timedelta(minutes=30)
 starttime = endtime - timedelta(hours=1)
 starttime_iso = starttime.isoformat(timespec="seconds").replace("+00:00", "Z")
 endtime_iso = endtime.isoformat(timespec="seconds").replace("+00:00", "Z")
@@ -26,22 +26,32 @@ endtime_iso = endtime.isoformat(timespec="seconds").replace("+00:00", "Z")
 try:
     composites = download_stored_query(
         "fmi::radar::composite::dbz",
-        [
-            "starttime=" + starttime_iso,
-            "endtime=" + endtime_iso,
-            "bbox=20,59,32,71" #Suomi?
+        args=[
+            f"starttime={starttime_iso}",
+            f"endtime={endtime_iso}",
+            "bbox=20,59,32,71"  # Finland bounding box
         ]
     )
 
-    if not composites.data:
-        print("FMI radar: ei dataa annetulle aikavälille.")
-    else:
-        first_key = sorted(composites.data.keys())[0]
-        composite = composites.data[first_key]
+#    composites = download_stored_query(
+#        "fmi::radar::composite::dbz",
+#        [
+#            "starttime=" + starttime_iso,
+#            "endtime=" + endtime_iso,
+#            "bbox=20,59,32,71" #Suomi?
+#        ]
+#    )
+
+    if composites.data:
+        # Pick the latest available composite
+        latest_key = sorted(composites.data.keys())[-1]
+        composite = composites.data[latest_key]
         composite.download()
         radar_file = os.path.join(radar_dir, "latest_radar.png")
         composite.save_file(radar_file)
         print(f"Latest radar image saved to {radar_file}")
+    else:
+        print("FMI radar: no data available for the requested time range.")
 
 except Exception as e:
     print(f"FMI radar download failed: {e}")
