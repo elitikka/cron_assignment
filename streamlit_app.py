@@ -8,14 +8,25 @@ import os
 
 load_dotenv(dotenv_path="/home/ubuntu/cron_assignment/.env")
 
-# OULU SÄÄ
-CITY = "Oulu"
+# OULU SÄÄ - Norjan ilmatieteenlaitos
+# Oulu sijainti
+OU_LAT = 65.0121
+OU_LON = 25.4651
 try:
-    oulu_response = requests.get(f"http://goweather.xyz/weather/{CITY}", timeout=10)
+    url = f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={OU_LAT}&lon={OU_LON}"
+    headers = {"User-Agent": "MySchoolProject/1.0"}  # Required by MET.NO
+    oulu_response = requests.get(url, headers=headers, timeout=10)
     oulu_data = oulu_response.json()
-    st.subheader(f"Sää nyt ({CITY})")
-    st.write(f"Lämpötila: {oulu_data['temperature']}")
-    st.write(f"Tuuli: {oulu_data['wind']}")
+
+    # Tämänhetkinen sää
+    details = oulu_data["properties"]["timeseries"][0]["data"]["instant"]["details"]
+    temp = details["air_temperature"]
+    wind = details["wind_speed"]
+
+    st.subheader("Sää nyt (Oulu)")
+    st.write(f"Lämpötila: {temp} °C")
+    st.write(f"Tuuli: {wind} m/s")
+
 except Exception as e:
     st.error("Säätietoja ei saatavilla")
     st.write(e)
