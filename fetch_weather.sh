@@ -1,26 +1,33 @@
 #!/bin/bash 
-# Polku virtuaaliympäristöön 
+# Polku virtuaaliympÃ¤ristÃ¶Ã¶n 
+PROJECT_DIR="/home/ubuntu/cron_assignment"
 VENV_DIR="venv" 
-# Luo virtuaaliympäristö, jos ei ole olemassa 
+
+cd $PROJECT_DIR || exit 1
+
+# Luo virtuaaliympÃ¤ristÃ¶, jos ei ole olemassa 
 if [ ! -d "$VENV_DIR" ]; then 
-echo "Luodaan virtuaaliympäristö..." 
-python3 -m venv $VENV_DIR 
+    echo "Luodaan virtuaaliympÃ¤ristÃ¶..." 
+    python3 -m venv $VENV_DIR 
 fi 
-# Aktivoi virtuaaliympäristö 
+
+# Aktivoi virtuaaliympÃ¤ristÃ¶ 
 source $VENV_DIR/bin/activate 
+
 # Asenna riippuvuudet requirements.txt-tiedostosta 
 if [ -f "requirements.txt" ]; then 
-echo "Asennetaan riippuvuudet..." 
-pip install --upgrade pip 
-pip install -r requirements.txt 
+    echo "Asennetaan riippuvuudet..." 
+    pip install --upgrade pip 
+    pip install -r requirements.txt 
 else 
-echo "requirements.txt ei löytynyt!" 
+    echo "requirements.txt ei lÃ¶ytynyt!" 
 fi 
+
 # Suorita fetch_weather.py 
 if [ -f "fetch_weather.py" ]; then 
-echo "Suoritetaan fetch_weather.py..." 
-python fetch_weather.py 
+    echo "Suoritetaan fetch_weather.py..." 
+    python fetch_weather.py 
 else 
-echo "fetch_weather.py ei löytynyt!" 
+    echo "fetch_weather.py ei lÃ¶ytynyt!" 
 fi 
-echo "Valmis!" 
+    echo "Valmis!" 
