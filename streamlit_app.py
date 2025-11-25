@@ -10,12 +10,12 @@ load_dotenv(dotenv_path="/home/ubuntu/cron_assignment/.env")
 #SUOMEN ILMATIETEENLAITOKSEN AVOIN DATA
 # Näytä viimeisin FMI tutkakuva
 radar_dir = "/home/ubuntu/cron_assignment/fmi_data/radar"
-# Tarkista, onko kansio olemassa. Jos kansiota ei ole olemassa, kansio luodaan.
-if os.path.exists(radar_dir) and len(os.listdir(radar_dir)) > 0:
-    # Hae viimeisin tutkakuva    
-    latest_file = max([os.path.join(radar_dir, f) for f in os.listdir(radar_dir)], key=os.path.getctime)
-    # Näytä viimeisin tutkakuva
-    st.image(latest_file, caption="Viimeisin tutkakuva (tutkaheijastavuustekijä dBZ)")
+latest_file = os.path.join(radar_dir, "latest_radar.png")
+# Tarkista, onko olemassa:
+if os.path.exists(latest_file):
+    st.image(latest_file, caption="Viimeisin tutkakuva (dBZ)")
+else:
+    st.warning("Ei saatavilla FMI tutkakuvaa. Suorita fetch_weather.py ensin.")
 
 # OPEN WEATHER AVOIN SÄÄDATA + MYSQL
 # Avaa yhteys MySQL tietokantaan

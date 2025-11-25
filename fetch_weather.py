@@ -2,20 +2,40 @@
 # -*- coding: utf-8 -*-
 import requests 
 import mysql.connector 
-from datetime import datetime 
+from datetime import datetime, timedelta 
 from dotenv import load_dotenv
-from fmiopendata.radar import get_latest_radar_image
 import os
+from fmiopendata.wfs import download_stored_query
 
 # ENV tiedoston salaisuudet
 load_dotenv("/home/ubuntu/cron_assignment/.env")
 
-
 # Suomen Ilmatieteenlaitoksen säätutka
 radar_dir = "/home/ubuntu/cron_assignment/fmi_data/radar"
 os.makedirs(radar_dir, exist_ok=True)
-image_path = get_latest_radar_image(save_dir=radar_dir, image_type="ref")
-print(f"Latest radar image saved to {image_path}")
+
+# Määritä datan range: viimeisin tunti (UTC)
+endtime = datetime.utcnow()
+starttime = endtime - timedelta(hours=1)
+
+try:
+    # Lataa viimeisin heijastavuuskomposiitti
+    composite = download_stored_query(
+        "fmi::radar::composite::dbz",
+        starttime=starttime,
+        endtime=endtime
+    )
+
+    # Tallenna tutkakuva PNG:nä
+    radar_file = os.path.join(radar_dir, "latest_radar.png")
+    # 'composite.data' is a dict: key=timestamp, value=RadarImage object
+    first_image = list(composite.data.values())[0]
+    first_image.save_file(radar_file)
+
+    print(f"Latest radar image saved to {radar_file}")
+except Exception as e:
+    print(f"FMI radar download failed: {e}")
+
 
 # Open Weather API
 OWAPI_KEY = os.getenv("OW_API_KEY")
