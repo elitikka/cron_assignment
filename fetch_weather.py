@@ -28,7 +28,7 @@ try:
     composite = download_stored_query(
         "fmi::radar::composite::dbz",
         starttime=starttime_iso,
-        endtime=endtime_iso
+        endtime=endtime_iso,
         bbox="20,59,32,71,epsg::4326"  # bounding box Suomelle
     )
 
